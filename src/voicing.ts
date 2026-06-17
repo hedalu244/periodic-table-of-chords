@@ -1,4 +1,4 @@
-import { Chord, Pitch, PitchClass, Voicing } from "./ChordPlayer";
+import { Chord, Pitch, PitchClass, Voicing } from "./chord-player";
 
 export const DEFAULT_ROOT_OCTAVE = 5;
 

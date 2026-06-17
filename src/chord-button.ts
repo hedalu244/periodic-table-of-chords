@@ -1,5 +1,5 @@
 import { TorusChordRow } from "./torus-renderer";
-import { projectTorusPoint, TORUS_DEGREE, TorusViewState } from "./torus-util";
+import { projectTorusPoint, TORUS_DEGREE, TorusViewState } from "./torus-utils";
 
 interface RenderChordButtonParams {
     fragment: DocumentFragment;

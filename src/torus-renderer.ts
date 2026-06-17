@@ -1,8 +1,8 @@
 import { renderChordButton } from "./chord-button";
-import { Chord } from "./ChordPlayer";
+import { Chord } from "./chord-player";
 import { TorusBackground } from "./torus-background";
 import { TorusScrollController } from "./torus-scroll-controller";
-import { normalizeDegree } from "./torus-util";
+import { normalizeDegree } from "./torus-utils";
 
 export interface TorusChordRow {
     id: string;

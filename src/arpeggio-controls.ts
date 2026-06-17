@@ -1,4 +1,4 @@
-import { ArpeggioParams, ArpeggioType } from "./ChordPlayer";
+import { ArpeggioParams, ArpeggioType } from "./chord-player";
 import { getElementById } from "./dom";
 
 const ARPEGGIO_TYPES: ArpeggioType[] = [
@@ -28,7 +28,7 @@ function getSelectedArpeggioType(): ArpeggioType {
     return type;
 }
 
-export function setupArpeggioSettings(onChange: () => void): void {
+export function setupArpeggioControls(onChange: () => void): void {
     const arpeggioTypeInputs = document.querySelectorAll<HTMLInputElement>('input[name="arpeggio-type"]');
     for (const typeInput of arpeggioTypeInputs) {
         typeInput.addEventListener("change", () => {

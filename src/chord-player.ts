@@ -1,4 +1,4 @@
-import { AudioBackend } from "./AudioBackend";
+import { AudioBackend } from "./audio-backend";
 
 export type PitchClass = number;
 export type Octave = number;

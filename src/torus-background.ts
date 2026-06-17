@@ -1,4 +1,4 @@
-import { projectTorusPoint, TORUS_DEGREE, TorusViewState } from "./torus-util";
+import { projectTorusPoint, TORUS_DEGREE, TorusViewState } from "./torus-utils";
 
 
 const DIAGONAL_GRID_SLOPE = -0.25;

@@ -1,4 +1,4 @@
-import { normalizeDegree, TORUS_DEGREE, TorusViewState } from "./torus-util";
+import { normalizeDegree, TORUS_DEGREE, TorusViewState } from "./torus-utils";
 
 interface PanState {
     pointerId: number;

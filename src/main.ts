@@ -1,7 +1,7 @@
 import { TorusRenderer } from "./torus-renderer";
 import { getElementById } from "./dom";
 import { VoicingManager } from "./voicing-manager";
-import { setupArpeggioSettings } from "./ArpeggioSettings";
+import { setupArpeggioControls } from "./arpeggio-controls";
 
 async function main(): Promise<void> {
     const stage = getElementById("torus-stage", HTMLDivElement);
@@ -18,7 +18,7 @@ async function main(): Promise<void> {
         },
     });
 
-    setupArpeggioSettings(() => {
+    setupArpeggioControls(() => {
         voicingManager.replayActiveVoicing();
     },);
 

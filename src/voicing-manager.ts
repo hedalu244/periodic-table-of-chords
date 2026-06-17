@@ -1,6 +1,6 @@
-import { getArpeggioSettings } from "./ArpeggioSettings";
-import { AudioBackend } from "./AudioBackend";
-import { Chord, ChordPlayer, Voicing } from "./ChordPlayer";
+import { getArpeggioSettings } from "./arpeggio-controls";
+import { AudioBackend } from "./audio-backend";
+import { Chord, ChordPlayer, Voicing } from "./chord-player";
 import { decideVoicing, invertVoicing } from "./voicing";
 
 export class VoicingManager {
