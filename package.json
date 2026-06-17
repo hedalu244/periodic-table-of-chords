@@ -1,0 +1,20 @@
+{
+  "name": "periodic-table-of-chords",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "debug": "concurrently \"tsc -w --noEmit\" \"esbuild src/main.ts --bundle --outfile=docs/main.js --sourcemap --watch\" \"node scripts/watchStatic.cjs\"",
+    "copy:static": "node scripts/copyStatic.cjs",
+    "build": "npm run copy:static && esbuild src/main.ts --bundle --outfile=docs/main.js --minify",
+    "typecheck": "tsc --noEmit",
+    "test:midi-loader": "esbuild tests/tests.ts --bundle --platform=node --format=cjs --outfile=tests/test.cjs && node -e \"const p='./tests/test.cjs';const fs=require('fs');require(p).runAllMidiLoaderTests().then(()=>{console.log('midiLoader tests passed');}).catch((e)=>{console.error(e&&e.stack?e.stack:e);process.exitCode=1;}).finally(()=>{if(fs.existsSync(p)){fs.unlinkSync(p);}});\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/p5": "^1.7.7",
+    "typescript": "^6.0.3"
+  }
+}
