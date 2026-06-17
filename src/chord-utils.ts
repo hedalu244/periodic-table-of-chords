@@ -71,8 +71,8 @@ export function generateBasicChord(name: string): Chord {
     }
 }
 
-export function nameChordWithVoicing(basicName: string, voicing: Voicing): string {
-    const { root, quality } = parseChordName(basicName);
+export function nameChordWithInversion(basicName: string, voicing: Voicing): string {
+    const { root } = parseChordName(basicName);
     const rootPitchClass = getPitchClass(root);
     const bassPitch = voicing[0];
     const bassPitchClass = bassPitch % 12;

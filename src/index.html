@@ -73,6 +73,13 @@
             font-weight: 600;
         }
 
+        .current-chord-name {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
         #keyboard-canvas {
             width: 100%;
             height: 150px;
@@ -191,6 +198,7 @@
         </div>
         <section class="voicing-panel">
             <h2>Current Voicing</h2>
+            <p id="current-chord-name" class="current-chord-name">-</p>
             <canvas id="keyboard-canvas"></canvas>
             <canvas id="whisq-canvas"></canvas>
         </section>

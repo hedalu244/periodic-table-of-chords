@@ -29,11 +29,38 @@
         }
 
         .panel {
-            max-width: 1280px;
+            max-width: 1480px;
             margin: 0 auto;
             padding: 16px;
             display: grid;
             gap: 12px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 7fr) minmax(280px, 3fr);
+            gap: 12px;
+            align-items: start;
+        }
+
+        .torus-column {
+            min-width: 0;
+        }
+
+        .side-column {
+            min-width: 0;
+            display: grid;
+            gap: 10px;
+            align-content: start;
+        }
+
+        .side-controls {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            display: grid;
+            gap: 8px;
         }
 
         details {
@@ -58,6 +85,14 @@
             gap: 8px;
         }
 
+        .controls button {
+            flex: 1;
+        }
+
+        .stop {
+            width: 100%;
+        }
+
         .voicing-panel {
             background: var(--panel);
             border: 1px solid var(--border);
@@ -73,6 +108,13 @@
             font-weight: 600;
         }
 
+        .current-chord-name {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
         #keyboard-canvas {
             width: 100%;
             height: 150px;
@@ -84,22 +126,18 @@
         #whisq-canvas {
             width: 100%;
             aspect-ratio: 1 / 1;
-            max-height: 420px;
+            max-height: 380px;
             display: block;
             background: #dcdcdc;
             border-radius: 6px;
         }
 
-        .stop {
-            justify-self: start;
-        }
-
         #torus-stage {
             position: relative;
             width: 100%;
-            height: 65vh;
-            min-height: 360px;
-            max-height: 760px;
+            height: calc(100vh - 72px);
+            min-height: 520px;
+            max-height: 900px;
             border: 1px solid var(--border);
             background: #e6e6e6;
             overflow: hidden;
@@ -149,6 +187,29 @@
             inset: 4px;
             border-radius: 2px;
         }
+
+        @media (max-width: 960px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .torus-column {
+                order: 2;
+            }
+
+            .side-column {
+                order: 1;
+            }
+
+            #torus-stage {
+                height: 58vh;
+                min-height: 360px;
+            }
+
+            #whisq-canvas {
+                max-height: 460px;
+            }
+        }
     </style>
 </head>
 
@@ -156,49 +217,62 @@
     <main class="panel">
         <h1>The Periodic Table of Chords</h1>
         <p>背景ドラッグ、ホイール、ホイールドラッグでトーラス面を移動できます。</p>
-        <details>
-            <summary>Arpeggio Settings</summary>
-            <fieldset>
-                <legend>Type</legend>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="none" checked>
-                    none
-                </label>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="up-once">
-                    up-once
-                </label>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="down-once">
-                    down-once
-                </label>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="up-loop">
-                    up-loop
-                </label>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="down-loop">
-                    down-loop
-                </label>
-            </fieldset>
+        <section class="layout">
+            <div class="torus-column">
+                <div id="torus-stage">
+                    <canvas id="torus-grid"></canvas>
+                    <div id="torus-chord-layer"></div>
+                </div>
+            </div>
 
-            <label for="input-arpeggio-offset-ms">Offset (ms)</label>
-            <input id="input-arpeggio-offset-ms" type="number" min="0" step="1" value="170">
-        </details>
-        <div class="controls">
-            <button id="btn-voicing-down">Voicing Down</button>
-            <button id="btn-voicing-up">Voicing Up</button>
-        </div>
-        <section class="voicing-panel">
-            <h2>Current Voicing</h2>
-            <canvas id="keyboard-canvas"></canvas>
-            <canvas id="whisq-canvas"></canvas>
+            <aside class="side-column">
+                <section class="side-controls">
+                    <button id="btn-stop" class="stop">Stop</button>
+                    <div class="controls">
+                        <button id="btn-voicing-down">Voicing Down</button>
+                        <button id="btn-voicing-up">Voicing Up</button>
+                    </div>
+
+                    <details>
+                        <summary>Arpeggio Settings</summary>
+                        <fieldset>
+                            <legend>Type</legend>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="none" checked>
+                                none
+                            </label>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="up-once">
+                                up-once
+                            </label>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="down-once">
+                                down-once
+                            </label>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="up-loop">
+                                up-loop
+                            </label>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="down-loop">
+                                down-loop
+                            </label>
+                        </fieldset>
+
+                        <label for="input-arpeggio-offset-ms">Offset (ms)</label>
+                        <input id="input-arpeggio-offset-ms" type="number" min="0" step="1" value="170">
+                    </details>
+                </section>
+
+                <section class="voicing-panel">
+                    <h2>Current Voicing</h2>
+                    <p id="current-chord-name" class="current-chord-name">-</p>
+                </section>
+
+                <canvas id="keyboard-canvas"></canvas>
+                <canvas id="whisq-canvas"></canvas>
+            </aside>
         </section>
-        <button id="btn-stop" class="stop">Stop</button>
-        <div id="torus-stage">
-            <canvas id="torus-grid"></canvas>
-            <div id="torus-chord-layer"></div>
-        </div>
     </main>
     <script src="./main.js"></script>
 </body>

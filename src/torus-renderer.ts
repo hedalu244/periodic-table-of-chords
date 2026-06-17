@@ -9,7 +9,7 @@ export interface ChordMapControllerParams {
     stage: HTMLDivElement;
     chordLayer: HTMLDivElement;
     gridCanvas: HTMLCanvasElement;
-    onChordSelected: (chord: Chord) => Promise<void>;
+    onChordSelected: (chordName: string, chord: Chord) => Promise<void>;
 }
 
 function normalizeChordTable(table: TorusChordRow[]): TorusChordRow[] {
@@ -34,7 +34,7 @@ function buildChordMap(chordTable: TorusChordRow[]): Map<string, TorusChordRow> 
 
 export class TorusRenderer {
     private readonly chordLayer: HTMLDivElement;
-    private readonly onChordSelected: (chord: Chord) => Promise<void>;
+    private readonly onChordSelected: (chordName: string, chord: Chord) => Promise<void>;
     private readonly torusScrollController: TorusScrollController;
     private readonly torusBackground: TorusBackground;
     private readonly chordTable: TorusChordRow[];
@@ -91,6 +91,6 @@ export class TorusRenderer {
         }
         this.activeChordId = chordId;
         this.renderScene();
-        await this.onChordSelected(row.chord);
+        await this.onChordSelected(row.name, row.chord);
     };
 }
