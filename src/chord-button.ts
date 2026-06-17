@@ -38,6 +38,7 @@ function createChordButton(
     button.style.top = `${y}px`;
     button.textContent = chord.name;
     button.dataset.chordId = chord.id;
+    button.style.background = `linear-gradient(to right, ${chord.color1} ${chord.rate}%, ${chord.color2} ${chord.rate}%)`;
     button.addEventListener("click", () => {
         void onChordClick(chord.id);
     });

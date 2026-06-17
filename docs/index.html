@@ -12,8 +12,6 @@
             --panel: #f7f7f7;
             --line-dark: #9f9f9f;
             --line-light: #bcbcbc;
-            --btn: #1c9ea2;
-            --btn-active: #8f4ab8;
             --btn-text: #ffffff;
             --text: #202020;
             --border: #b8b8b8;
@@ -99,8 +97,7 @@
             width: 52px;
             height: 28px;
             border: none;
-            border-radius: 4px;
-            background: var(--btn);
+            border-radius: 6px;
             color: var(--btn-text);
             font-size: 12px;
             line-height: 1;
@@ -110,7 +107,15 @@
         }
 
         .torus-chord.active {
-            background: var(--btn-active);
+            color: var(--text);
+        }
+        .torus-chord.active::before {
+            background: var(--bg);
+            z-index: -1;
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border-radius: 2px;
         }
     </style>
 </head>
