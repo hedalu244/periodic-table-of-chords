@@ -9,6 +9,11 @@ export class VoicingManager {
     private isAudioReady = false;
     private readonly backend = new AudioBackend();
     private readonly player = new ChordPlayer(this.backend);
+    private readonly onVoicingChanged: (voicing: Voicing | null) => void;
+
+    constructor(onVoicingChanged: (voicing: Voicing | null) => void) {
+        this.onVoicingChanged = onVoicingChanged;
+    }
 
     replayActiveVoicing(): void {
         if (this.currentVoicing === null) {
@@ -24,6 +29,7 @@ export class VoicingManager {
         await this.prepareAudio();
         const nextVoicing = invertVoicing(this.currentVoicing, direction);
         this.currentVoicing = nextVoicing;
+        this.onVoicingChanged(nextVoicing);
         this.player.play(nextVoicing, getArpeggioSettings());
     }
 
@@ -31,12 +37,14 @@ export class VoicingManager {
         await this.prepareAudio();
         const nextVoicing = decideVoicing(chord, this.currentVoicing ?? undefined);
         this.currentVoicing = nextVoicing;
+        this.onVoicingChanged(nextVoicing);
         this.player.play(nextVoicing, getArpeggioSettings());
     }
 
     stopChord(): void {
         this.player.stop();
         this.currentVoicing = null;
+        this.onVoicingChanged(null);
     }
 
     private async prepareAudio(): Promise<void> {

@@ -58,6 +58,29 @@
             gap: 8px;
         }
 
+        .voicing-panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .voicing-panel h2 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        #keyboard-canvas {
+            width: 100%;
+            height: 150px;
+            display: block;
+            background: #dcdcdc;
+            border-radius: 6px;
+        }
+
         .stop {
             justify-self: start;
         }
@@ -157,6 +180,10 @@
             <button id="btn-voicing-down">Voicing Down</button>
             <button id="btn-voicing-up">Voicing Up</button>
         </div>
+        <section class="voicing-panel">
+            <h2>Current Voicing</h2>
+            <canvas id="keyboard-canvas"></canvas>
+        </section>
         <button id="btn-stop" class="stop">Stop</button>
         <div id="torus-stage">
             <canvas id="torus-grid"></canvas>

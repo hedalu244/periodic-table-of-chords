@@ -1,4 +1,5 @@
 import { Chord, generateBasicChord, getNoteName } from "./chord-utils";
+import { T_color, D_color, S_color } from "./color-scheme";
 
 export interface TorusChordRow {
     id: string;
@@ -12,9 +13,6 @@ export interface TorusChordRow {
     rate: number;
 }
 
-const T_color = "#13adb0";
-const D_color = "#6e3196";
-const S_color = "#d27700";
 
 export const RAW_CHORD_TABLE: TorusChordRow[] = [
     ...generateDiminishedSeventhChords(),
@@ -80,7 +78,7 @@ function generateMinorTriads(): TorusChordRow[] {
         chordTable.push({
             id: chordId,
             xDeg: i * 120 + 45,
-            yDeg: i * -30 - 78.75,
+            yDeg: i * -30 - 123.75,
             name: chordName,
             chord: chord,
             color1: [T_color, D_color, S_color][i % 3],

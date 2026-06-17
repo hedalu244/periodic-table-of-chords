@@ -2,12 +2,17 @@ import { TorusRenderer } from "./torus-renderer";
 import { getElementById } from "./dom";
 import { VoicingManager } from "./voicing-manager";
 import { setupArpeggioControls } from "./arpeggio-controls";
+import { KeyboardCanvas } from "./keyboard-canvas";
 
 async function main(): Promise<void> {
     const stage = getElementById("torus-stage", HTMLDivElement);
     const chordLayer = getElementById("torus-chord-layer", HTMLDivElement);
     const gridCanvas = getElementById("torus-grid", HTMLCanvasElement);
-    const voicingManager = new VoicingManager();
+    const keyboardCanvasElement = getElementById("keyboard-canvas", HTMLCanvasElement);
+    const keyboardCanvas = new KeyboardCanvas(keyboardCanvasElement);
+    const voicingManager = new VoicingManager((voicing) => {
+        keyboardCanvas.setVoicing(voicing);
+    });
 
     const torusRenderer = new TorusRenderer({
         stage: stage,
@@ -36,6 +41,11 @@ async function main(): Promise<void> {
     stopButton.addEventListener("click", () => {
         voicingManager.stopChord();
         torusRenderer.clearActiveChord();
+    });
+
+    window.addEventListener("beforeunload", () => {
+        keyboardCanvas.dispose();
+        torusRenderer.dispose();
     });
 
     torusRenderer.renderScene();
