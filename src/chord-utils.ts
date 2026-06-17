@@ -54,6 +54,7 @@ export function generateBasicChord(name: string): Chord {
 
     switch (quality) {
         case "":
+        case "M":
             return transposeChord([0, 4, 7], rootPitchClass); // Major triad
         case "m":
             return transposeChord([0, 3, 7], rootPitchClass); // Minor triad

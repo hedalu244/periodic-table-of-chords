@@ -1,4 +1,4 @@
-import { TorusChordRow } from "./torus-renderer";
+import { TorusChordRow } from "./chord-table";
 import { projectTorusPoint, TORUS_DEGREE, TorusViewState } from "./torus-utils";
 
 interface RenderChordButtonParams {
@@ -36,7 +36,7 @@ function createChordButton(
     button.className = activeChordId === chord.id ? "torus-chord active" : "torus-chord";
     button.style.left = `${x}px`;
     button.style.top = `${y}px`;
-    button.textContent = chord.label;
+    button.textContent = chord.name;
     button.dataset.chordId = chord.id;
     button.addEventListener("click", () => {
         void onChordClick(chord.id);
