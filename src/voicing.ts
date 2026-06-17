@@ -1,4 +1,4 @@
-import { Chord, Pitch, PitchClass, Voicing } from "./chord-player";
+import { Chord, Pitch, PitchClass, Voicing } from "./chord-utils";
 
 export const DEFAULT_ROOT_OCTAVE = 5;
 
@@ -111,19 +111,4 @@ export function decideVoicing(chord: Chord, previousVoicing: Voicing | undefined
 	}
 
 	return best;
-}
-
-
-export function invertVoicing(voicing: Voicing, direction: "up" | "down"): Voicing {
-    validateVoicing(voicing);
-    if (direction === "up") {
-        const newBass = voicing[0] + 12;
-        const newVoicing = [...voicing.slice(1), newBass];
-        return newVoicing;
-    }
-    else {
-        const newTop = voicing[voicing.length - 1] - 12;
-        const newVoicing = [newTop, ...voicing.slice(0, -1)];
-        return newVoicing;
-    }
 }

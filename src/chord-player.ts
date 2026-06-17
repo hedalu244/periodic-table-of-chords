@@ -1,10 +1,5 @@
 import { AudioBackend } from "./audio-backend";
-
-export type PitchClass = number;
-export type Octave = number;
-export type Pitch = number;
-export type Chord = PitchClass[];
-export type Voicing = Pitch[];
+import { Voicing } from "./chord-utils";
 
 export type ArpeggioType =
     | "up-once"

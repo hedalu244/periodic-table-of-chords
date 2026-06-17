@@ -58,7 +58,6 @@ export class TorusScrollController {
         this.stage.addEventListener("wheel", this.onWheel, { passive: false });
 
         this.updateViewStateFromStage();
-        this.emitViewStateChange();
     }
 
     getViewState(): TorusViewState {
