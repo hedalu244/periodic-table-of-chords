@@ -81,6 +81,15 @@
             border-radius: 6px;
         }
 
+        #whisq-canvas {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-height: 420px;
+            display: block;
+            background: #dcdcdc;
+            border-radius: 6px;
+        }
+
         .stop {
             justify-self: start;
         }
@@ -183,6 +192,7 @@
         <section class="voicing-panel">
             <h2>Current Voicing</h2>
             <canvas id="keyboard-canvas"></canvas>
+            <canvas id="whisq-canvas"></canvas>
         </section>
         <button id="btn-stop" class="stop">Stop</button>
         <div id="torus-stage">
