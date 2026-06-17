@@ -2,43 +2,57 @@ import { ArpeggioParams, ArpeggioType } from "./ChordPlayer";
 import { getElementById } from "./dom";
 
 const ARPEGGIO_TYPES: ArpeggioType[] = [
-	"none",
-	"up-once",
-	"down-once",
-	"up-loop",
-	"down-loop",
+    "none",
+    "up-once",
+    "down-once",
+    "up-loop",
+    "down-loop",
 ];
 
 function isArpeggioType(value: string): value is ArpeggioType {
-	return ARPEGGIO_TYPES.includes(value as ArpeggioType);
+    return ARPEGGIO_TYPES.includes(value as ArpeggioType);
 }
 
 function getSelectedArpeggioType(): ArpeggioType {
-	const typeElement = document.querySelector<HTMLInputElement>(
-		'input[name="arpeggio-type"]:checked'
-	);
-	if (!typeElement) {
-		throw new Error("arpeggio type is not selected");
-	}
+    const typeElement = document.querySelector<HTMLInputElement>(
+        'input[name="arpeggio-type"]:checked'
+    );
+    if (!typeElement) {
+        throw new Error("arpeggio type is not selected");
+    }
 
-	const type = typeElement.value;
-	if (!isArpeggioType(type)) {
-		throw new Error("invalid arpeggio type: " + type);
-	}
-	return type;
+    const type = typeElement.value;
+    if (!isArpeggioType(type)) {
+        throw new Error("invalid arpeggio type: " + type);
+    }
+    return type;
+}
+
+export function setupArpeggioSettings(onChange: () => void): void {
+    const arpeggioTypeInputs = document.querySelectorAll<HTMLInputElement>('input[name="arpeggio-type"]');
+    for (const typeInput of arpeggioTypeInputs) {
+        typeInput.addEventListener("change", () => {
+            onChange();
+        });
+    }
+
+    const offsetInput = getElementById("input-arpeggio-offset-ms", HTMLInputElement);
+    offsetInput.addEventListener("input", () => {
+        onChange();
+    });
 }
 
 export function getArpeggioSettings(): ArpeggioParams {
-	const offsetInput = getElementById("input-arpeggio-offset-ms", HTMLInputElement);
-	const noteOffsetMs = Number(offsetInput.value);
+    const offsetInput = getElementById("input-arpeggio-offset-ms", HTMLInputElement);
+    const noteOffsetMs = Number(offsetInput.value);
 
-	if (!Number.isFinite(noteOffsetMs) || noteOffsetMs < 0) {
-		throw new Error("arpeggio offset must be a non-negative number");
-	}
+    if (!Number.isFinite(noteOffsetMs) || noteOffsetMs < 0) {
+        throw new Error("arpeggio offset must be a non-negative number");
+    }
 
-	return {
-		type: getSelectedArpeggioType(),
-		noteOffsetMs: noteOffsetMs,
-	};
+    return {
+        type: getSelectedArpeggioType(),
+        noteOffsetMs: noteOffsetMs,
+    };
 }
 

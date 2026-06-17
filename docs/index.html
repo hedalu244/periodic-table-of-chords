@@ -5,12 +5,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Periodic Table of Chords</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #efefef;
+            --panel: #f7f7f7;
+            --line-dark: #9f9f9f;
+            --line-light: #bcbcbc;
+            --btn: #1c9ea2;
+            --btn-active: #8f4ab8;
+            --btn-text: #ffffff;
+            --text: #202020;
+            --border: #b8b8b8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        .panel {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+        }
+
+        details {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+
+        fieldset {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 8px 0;
+            padding: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .stop {
+            justify-self: start;
+        }
+
+        #torus-stage {
+            position: relative;
+            width: 100%;
+            height: 65vh;
+            min-height: 360px;
+            max-height: 760px;
+            border: 1px solid var(--border);
+            background: #e6e6e6;
+            overflow: hidden;
+            cursor: grab;
+            user-select: none;
+        }
+
+        #torus-stage.dragging {
+            cursor: grabbing;
+        }
+
+        #torus-grid {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #torus-chord-layer {
+            position: absolute;
+            inset: 0;
+        }
+
+        .torus-chord {
+            position: absolute;
+            width: 52px;
+            height: 28px;
+            border: none;
+            border-radius: 4px;
+            background: var(--btn);
+            color: var(--btn-text);
+            font-size: 12px;
+            line-height: 1;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            padding: 0;
+        }
+
+        .torus-chord.active {
+            background: var(--btn-active);
+        }
+    </style>
 </head>
 
 <body>
     <main class="panel">
-        <h1>Chord Player Demo</h1>
-        <p>各ボタンで3〜4和音を再生します。連打すると前の再生を止めて次の再生へ切り替わります。</p>
+        <h1>The Periodic Table of Chords</h1>
+        <p>背景ドラッグ、ホイール、ホイールドラッグでトーラス面を移動できます。</p>
         <details>
             <summary>Arpeggio Settings</summary>
             <fieldset>
@@ -45,14 +153,9 @@
             <button id="btn-voicing-up">Voicing Up</button>
         </div>
         <button id="btn-stop" class="stop">Stop</button>
-        <div class="grid">
-            <button id="btn-chord-c-major7">Cmaj7</button>
-            <button id="btn-chord-d-minor7">Dm7</button>
-            <button id="btn-chord-e-minor7">Em7</button>
-            <button id="btn-chord-f-major7">Fmaj7</button>
-            <button id="btn-chord-g7">G7</button>
-            <button id="btn-chord-a-minor7">Am7</button>
-            <button id="btn-chord-b-minor7-flat5">B7-5</button>
+        <div id="torus-stage">
+            <canvas id="torus-grid"></canvas>
+            <div id="torus-chord-layer"></div>
         </div>
     </main>
     <script src="./main.js"></script>
