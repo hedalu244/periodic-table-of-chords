@@ -113,7 +113,7 @@ function drawKeyShape(
     ctx.fillStyle = fillColor;
     ctx.fill();
 
-    ctx.strokeStyle = "#000000";
+    ctx.strokeStyle = "#777777";
     ctx.lineWidth = 1;
     ctx.stroke();
 }

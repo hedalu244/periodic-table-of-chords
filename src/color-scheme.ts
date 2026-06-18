@@ -4,9 +4,9 @@ export const T_color = "#13adb0";
 export const D_color = "#6e3196";
 export const S_color = "#d27700";
 
-export const T_color_light = "#72fdff";
-export const D_color_light = "#d88bff";
-export const S_color_light = "#ffc69b";
+export const T_color_light = "#b8eff0";
+export const D_color_light = "#e6c8f5";
+export const S_color_light = "#eed5c1";
 
 export const T_color_dark = "#076e70";
 export const D_color_dark = "#4d2163";
@@ -21,8 +21,8 @@ export type ColorScheme = {
 export function getColorScheme(pitchClass: PitchClass, isBlack: boolean): ColorScheme {
     const axis = pitchClass % 3; 
     return {
-        activePitch: [T_color_light, D_color_light, S_color_light][axis], 
-        activePitchClass: [T_color_dark, D_color_dark, S_color_dark][axis],
-        idle: isBlack ? "#222222" : "#555555",
+        activePitch: [T_color, D_color, S_color][axis],
+        activePitchClass: [T_color_light, D_color_light, S_color_light][axis], 
+        idle: isBlack ? "#cccccc" : "#efefef",
     }
 }

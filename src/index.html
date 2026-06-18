@@ -5,208 +5,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Periodic Table of Chords</title>
-    <style>
-        :root {
-            color-scheme: light;
-            --bg: #efefef;
-            --panel: #f7f7f7;
-            --line-dark: #9f9f9f;
-            --line-light: #bcbcbc;
-            --btn-text: #ffffff;
-            --text: #202020;
-            --border: #b8b8b8;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
-            color: var(--text);
-            background: var(--bg);
-        }
-
-        .panel {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 16px;
-            display: grid;
-            gap: 12px;
-        }
-
-        details {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px 10px;
-        }
-
-        fieldset {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin: 8px 0;
-            padding: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .controls {
-            display: flex;
-            gap: 8px;
-        }
-
-        .voicing-panel {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px;
-            display: grid;
-            gap: 8px;
-        }
-
-        .voicing-panel h2 {
-            margin: 0;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .current-chord-name {
-            margin: 0;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-        }
-
-        #keyboard-canvas {
-            width: 100%;
-            height: 150px;
-            display: block;
-            background: #dcdcdc;
-            border-radius: 6px;
-        }
-
-        #whisq-canvas {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            max-height: 420px;
-            display: block;
-            background: #dcdcdc;
-            border-radius: 6px;
-        }
-
-        .stop {
-            justify-self: start;
-        }
-
-        #torus-stage {
-            position: relative;
-            width: 100%;
-            height: 65vh;
-            min-height: 360px;
-            max-height: 760px;
-            border: 1px solid var(--border);
-            background: #e6e6e6;
-            overflow: hidden;
-            cursor: grab;
-            user-select: none;
-        }
-
-        #torus-stage.dragging {
-            cursor: grabbing;
-        }
-
-        #torus-grid {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        #torus-chord-layer {
-            position: absolute;
-            inset: 0;
-        }
-
-        .torus-chord {
-            position: absolute;
-            width: 52px;
-            height: 28px;
-            border: none;
-            border-radius: 6px;
-            color: var(--btn-text);
-            font-size: 12px;
-            line-height: 1;
-            transform: translate(-50%, -50%);
-            white-space: nowrap;
-            padding: 0;
-        }
-
-        .torus-chord.active {
-            color: var(--text);
-        }
-        .torus-chord.active::before {
-            background: var(--bg);
-            z-index: -1;
-            content: "";
-            position: absolute;
-            inset: 4px;
-            border-radius: 2px;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
     <main class="panel">
-        <h1>The Periodic Table of Chords</h1>
-        <p>背景ドラッグ、ホイール、ホイールドラッグでトーラス面を移動できます。</p>
-        <details>
-            <summary>Arpeggio Settings</summary>
-            <fieldset>
-                <legend>Type</legend>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="none" checked>
-                    none
-                </label>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="up-once">
-                    up-once
-                </label>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="down-once">
-                    down-once
-                </label>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="up-loop">
-                    up-loop
-                </label>
-                <label>
-                    <input type="radio" name="arpeggio-type" value="down-loop">
-                    down-loop
-                </label>
-            </fieldset>
+        <section class="layout">
+            <div class="torus-column">
+                <div id="torus-stage">
+                    <canvas id="torus-grid"></canvas>
+                    <div id="torus-chord-layer"></div>
+                </div>
+            </div>
 
-            <label for="input-arpeggio-offset-ms">Offset (ms)</label>
-            <input id="input-arpeggio-offset-ms" type="number" min="0" step="1" value="170">
-        </details>
-        <div class="controls">
-            <button id="btn-voicing-down">Voicing Down</button>
-            <button id="btn-voicing-up">Voicing Up</button>
-        </div>
-        <section class="voicing-panel">
-            <h2>Current Voicing</h2>
-            <p id="current-chord-name" class="current-chord-name">-</p>
-            <canvas id="keyboard-canvas"></canvas>
-            <canvas id="whisq-canvas"></canvas>
+            <aside class="side-column">
+                <section class="app-intro">
+                    <h1>The Periodic Table of Chords</h1>
+                </section>
+                <section class="side-controls">
+                    <p id="current-chord-name" class="current-chord-name">-</p>
+                    <div class="controls">
+                        <button id="btn-stop" class="solid-button stop">Stop</button>
+                        <button id="btn-invert-down" class="hollow-button">Invert Down</button>
+                        <button id="btn-invert-up" class="hollow-button">Invert Up</button>
+                    </div>
+                    <canvas id="keyboard-canvas"></canvas>
+                    <canvas id="whisq-canvas"></canvas>
+                </section>
+                <section class="settings">
+                    <details>
+                        <summary>Settings</summary>
+                        <fieldset>
+                            <legend>Arpeggio Type</legend>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="none" checked>
+                                none
+                            </label>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="up-once">
+                                up-once
+                            </label>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="down-once">
+                                down-once
+                            </label>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="up-loop">
+                                up-loop
+                            </label>
+                            <label>
+                                <input type="radio" name="arpeggio-type" value="down-loop">
+                                down-loop
+                            </label>
+                        </fieldset>
+
+                        <label for="input-arpeggio-offset-ms">Arpeggio Amount (ms)</label>
+                        <input id="input-arpeggio-offset-ms" type="number" min="0" step="1" value="170">
+                    </details>
+                </section>
+            </aside>
         </section>
-        <button id="btn-stop" class="stop">Stop</button>
-        <div id="torus-stage">
-            <canvas id="torus-grid"></canvas>
-            <div id="torus-chord-layer"></div>
-        </div>
     </main>
     <script src="./main.js"></script>
 </body>

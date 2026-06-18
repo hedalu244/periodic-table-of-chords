@@ -17,6 +17,8 @@ const PITCHES_PER_OCTAVE = 12;
 const FOURTH_INTERVAL = 5;
 const WHOLE_TONE_INTERVAL = 2;
 
+const MARGIN = 10;
+
 function mod12(pitch: Pitch): PitchClass {
     return ((pitch % PITCHES_PER_OCTAVE) + PITCHES_PER_OCTAVE) % PITCHES_PER_OCTAVE;
 }
@@ -31,7 +33,7 @@ function buildWhisqLayout(
         throw new Error("gridSize must be positive");
     }
 
-    const keySize = Math.min(width, height) / gridSize;
+    const keySize = (Math.min(width, height) - 2 * MARGIN) / gridSize;
     const offsetX = (width - keySize * gridSize) / 2;
     const offsetY = (height - keySize * gridSize) / 2;
     const keyShapes: WhisqKeyShape[] = [];
@@ -76,7 +78,7 @@ function drawKeyShape(
     ctx.fillStyle = fillColor;
     ctx.fill();
 
-    ctx.strokeStyle = "#000000";
+    ctx.strokeStyle = "#777777";
     ctx.lineWidth = 1;
     ctx.stroke();
 }

@@ -1,0 +1,274 @@
+:root {
+    color-scheme: light;
+    --bg: #efefef;
+    --panel: #f7f7f7;
+    --line-dark: #9f9f9f;
+    --line-light: #bcbcbc;
+    --btn-text: #ffffff;
+    --text: #202020;
+    --border: #b8b8b8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg);
+}
+
+body {
+    min-height: 100dvh;
+    font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
+    color: var(--text);
+}
+
+.panel {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 14px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(320px, 3fr);
+    gap: 14px;
+    align-items: start;
+}
+
+.torus-column {
+    min-width: 0;
+}
+
+.side-column {
+    min-width: 0;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+}
+
+.app-intro,
+.side-controls,
+.settings-panel {
+    background: var(--panel);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+    padding: 12px;
+}
+
+.app-intro h1 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+}
+
+.app-intro p {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: #4f4f4f;
+}
+
+.side-controls {
+    display: grid;
+    gap: 10px;
+}
+
+details {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+details summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+fieldset {
+    border: none;
+    margin: 8px 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+}
+
+.controls button,
+.stop {
+    width: 100%;
+}
+
+.hollow-button,
+.solid-button {
+    border-radius: 20px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.hollow-button {
+    border: 1px solid #1a7dde;
+    color: #1781e6;
+}
+
+.solid-button {
+    border: none;
+    background: #1781e6;
+    color: #f7fbff;
+}
+
+.hollow-button:hover,
+.solid-button:hover {
+    border-color: #4aa1ef;
+    background: #2d92f2;
+    color: #f7fbff;
+}
+
+.hollow-button:active,
+.solid-button:active {
+    background: #0f6dca;
+    color: #f7fbff;
+}
+
+.stop {
+    margin-right: 20px;
+}
+
+input[type="number"] {
+    border: none;
+    background: #ffffff;
+    color: #1e1e1e;
+    padding: 8px 10px;
+}
+
+input[type="number"]:focus {
+    outline: 2px solid #49a0ee;
+    outline-offset: 0;
+}
+
+input[type="radio"] {
+    accent-color: #2d92f2;
+}
+
+.voicing-panel {
+    display: grid;
+    gap: 8px;
+}
+
+.current-chord-name {
+    margin: 0;
+    text-align: center;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--text);
+}
+
+#keyboard-canvas,
+#whisq-canvas {
+    width: 100%;
+    display: block;
+    background: #dcdcdc;
+    border: none;
+}
+
+#keyboard-canvas {
+    height: 150px;
+}
+
+#whisq-canvas {
+    aspect-ratio: 1 / 1;
+    max-height: 380px;
+}
+
+#torus-stage {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 32px);
+    min-height: 640px;
+    max-height: 960px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+    border: none;
+    background: var(--panel);
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+}
+
+#torus-stage.dragging {
+    cursor: grabbing;
+}
+
+#torus-grid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+#torus-chord-layer {
+    position: absolute;
+    inset: 0;
+}
+
+.torus-chord {
+    position: absolute;
+    width: 52px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    color: var(--btn-text);
+    font-size: 12px;
+    line-height: 1;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    padding: 0;
+}
+
+.torus-chord.active {
+    color: var(--text);
+}
+
+.torus-chord.active::before {
+    background: var(--bg);
+    z-index: -1;
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 2px;
+}
+
+@media (max-width: 1120px) {
+    .layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .torus-column {
+        order: 2;
+    }
+
+    .side-column {
+        order: 1;
+    }
+
+    #torus-stage {
+        height: 58vh;
+        min-height: 380px;
+    }
+
+    #whisq-canvas {
+        max-height: 520px;
+    }
+}

@@ -53,12 +53,12 @@ async function main(): Promise<void> {
         voicingManager.replayActiveVoicing();
     },);
 
-    const upButton = getElementById("btn-voicing-up", HTMLButtonElement);
+    const upButton = getElementById("btn-invert-up", HTMLButtonElement);
     upButton.addEventListener("click", () => {
         voicingManager.shiftActiveVoicing("up");
     });
 
-    const downButton = getElementById("btn-voicing-down", HTMLButtonElement);
+    const downButton = getElementById("btn-invert-down", HTMLButtonElement);
     downButton.addEventListener("click", () => {
         voicingManager.shiftActiveVoicing("down");
     });
