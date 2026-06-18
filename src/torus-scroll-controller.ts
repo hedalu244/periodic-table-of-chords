@@ -1,5 +1,7 @@
 import { normalizeDegree, TORUS_DEGREE, TorusViewState } from "./torus-utils";
 
+const WHEEL_PAN_SPEED = 0.2;
+
 interface PanState {
     pointerId: number;
     lastClientX: number;
@@ -164,6 +166,6 @@ export class TorusScrollController {
 
     private readonly onWheel = (event: WheelEvent): void => {
         event.preventDefault();
-        this.applyPanDeltaPx(-event.deltaX, -event.deltaY);
+        this.applyPanDeltaPx(-event.deltaX * WHEEL_PAN_SPEED, -event.deltaY * WHEEL_PAN_SPEED);
     };
 }

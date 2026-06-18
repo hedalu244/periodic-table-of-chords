@@ -26,5 +26,9 @@ export function projectTorusPoint(
 }
 
 export function normalizeDegree(value: number): number {
-    return ((value % TORUS_DEGREE) + TORUS_DEGREE) % TORUS_DEGREE;
+    return mod(value, TORUS_DEGREE);
+}
+
+export function mod(a: number, b: number): number {
+    return ((a % b) + b) % b;
 }

@@ -8,7 +8,10 @@
     };
   }
   function normalizeDegree(value) {
-    return (value % TORUS_DEGREE + TORUS_DEGREE) % TORUS_DEGREE;
+    return mod(value, TORUS_DEGREE);
+  }
+  function mod(a, b) {
+    return (a % b + b) % b;
   }
 
   // src/chord-button.ts
@@ -266,9 +269,14 @@
   }
 
   // src/torus-background.ts
-  var DIAGONAL_GRID_SLOPE = -0.25;
-  var VERTICAL_GRID_STEP_DEG = 30;
-  var DIAGONAL_GRID_STEP_DEG = 45;
+  var GRID_COLOR = "#b0b0b0";
+  var VERTICAL_GRID_STEP_DEG = 60;
+  var HORIZONTAL_GRID_SLOPE = -0.25;
+  var HORIZONTAL_GRID_STEP_DEG = 45;
+  var DIAGONAL1_GRID_SLOPE = -1.75;
+  var DIAGONAL1_GRID_STEP_DEG = 90;
+  var DIAGONAL2_GRID_SLOPE = 1.25;
+  var DIAGONAL2_GRID_STEP_DEG = 90;
   var TorusBackground = class {
     constructor(canvas) {
       const contextOrNull = canvas.getContext("2d");
@@ -281,8 +289,17 @@
     render(viewState) {
       this.resizeCanvasToViewState(viewState);
       this.ctx.clearRect(0, 0, viewState.width, viewState.height);
+      this.ctx.strokeStyle = GRID_COLOR;
+      this.ctx.setLineDash([]);
+      this.ctx.lineWidth = 3;
+      this.drawDiagonalGridLines(viewState, HORIZONTAL_GRID_SLOPE, HORIZONTAL_GRID_STEP_DEG);
+      this.ctx.lineWidth = 0.75;
+      this.ctx.setLineDash([4, 4]);
+      this.drawDiagonalGridLines(viewState, DIAGONAL1_GRID_SLOPE, DIAGONAL1_GRID_STEP_DEG);
+      this.ctx.lineWidth = 0.75;
+      this.ctx.setLineDash([4, 4]);
+      this.drawDiagonalGridLines(viewState, DIAGONAL2_GRID_SLOPE, DIAGONAL2_GRID_STEP_DEG);
       this.drawVerticalGridLines(viewState);
-      this.drawDiagonalGridLines(viewState);
     }
     resizeCanvasToViewState(viewState) {
       if (this.canvas.width !== viewState.width) {
@@ -296,11 +313,26 @@
       const visibleHalfXDeg = viewState.width / viewState.scaleX * TORUS_DEGREE / 2;
       const startStep = Math.floor((viewState.offsetXDeg - visibleHalfXDeg - TORUS_DEGREE) / VERTICAL_GRID_STEP_DEG);
       const endStep = Math.ceil((viewState.offsetXDeg + visibleHalfXDeg + TORUS_DEGREE) / VERTICAL_GRID_STEP_DEG);
-      this.ctx.strokeStyle = "#b0b0b0";
-      this.ctx.setLineDash([8, 8]);
-      this.ctx.lineWidth = 1;
       for (let step = startStep; step <= endStep; step += 1) {
         const xDeg = step * VERTICAL_GRID_STEP_DEG;
+        if (mod(xDeg, 180) === 0) {
+          this.ctx.strokeStyle = T_color;
+        } else if (mod(xDeg, 180) === 60) {
+          this.ctx.strokeStyle = S_color;
+        } else if (mod(xDeg, 180) === 120) {
+          this.ctx.strokeStyle = D_color;
+        }
+        if (mod(xDeg, 120) === 0) {
+          this.ctx.setLineDash([]);
+          this.ctx.lineWidth = 2;
+        } else if (mod(xDeg, 120) === 60) {
+          this.ctx.setLineDash([8, 8]);
+          this.ctx.lineWidth = 2;
+        } else {
+          this.ctx.strokeStyle = GRID_COLOR;
+          this.ctx.setLineDash([4, 4]);
+          this.ctx.lineWidth = 1;
+        }
         const x = viewState.width / 2 + (xDeg - viewState.offsetXDeg) / TORUS_DEGREE * viewState.scaleX;
         this.ctx.beginPath();
         this.ctx.moveTo(x, 0);
@@ -308,22 +340,25 @@
         this.ctx.stroke();
       }
     }
-    drawDiagonalGridLines(viewState) {
+    drawDiagonalGridLines(viewState, slope, stepDeg) {
       const visibleHalfXDeg = viewState.width / viewState.scaleX * TORUS_DEGREE / 2;
       const visibleHalfYDeg = viewState.height / viewState.scaleY * TORUS_DEGREE / 2;
       const xStart = viewState.offsetXDeg - visibleHalfXDeg - 2 * TORUS_DEGREE;
       const xEnd = viewState.offsetXDeg + visibleHalfXDeg + 2 * TORUS_DEGREE;
-      const minC = viewState.offsetYDeg - visibleHalfYDeg - DIAGONAL_GRID_SLOPE * (viewState.offsetXDeg + visibleHalfXDeg) - TORUS_DEGREE;
-      const maxC = viewState.offsetYDeg + visibleHalfYDeg - DIAGONAL_GRID_SLOPE * (viewState.offsetXDeg - visibleHalfXDeg) + TORUS_DEGREE;
-      const startStep = Math.floor(minC / DIAGONAL_GRID_STEP_DEG);
-      const endStep = Math.ceil(maxC / DIAGONAL_GRID_STEP_DEG);
-      this.ctx.strokeStyle = "#a4a4a4";
-      this.ctx.setLineDash([]);
-      this.ctx.lineWidth = 1.25;
+      const yStart = viewState.offsetYDeg - visibleHalfYDeg - TORUS_DEGREE;
+      const yEnd = viewState.offsetYDeg + visibleHalfYDeg + TORUS_DEGREE;
+      const c1 = yStart - slope * xStart;
+      const c2 = yStart - slope * xEnd;
+      const c3 = yEnd - slope * xStart;
+      const c4 = yEnd - slope * xEnd;
+      const minC = Math.min(c1, c2, c3, c4);
+      const maxC = Math.max(c1, c2, c3, c4);
+      const startStep = Math.floor(minC / stepDeg);
+      const endStep = Math.ceil(maxC / stepDeg);
       for (let step = startStep; step <= endStep; step += 1) {
-        const c = step * DIAGONAL_GRID_STEP_DEG;
-        const y1 = DIAGONAL_GRID_SLOPE * xStart + c;
-        const y2 = DIAGONAL_GRID_SLOPE * xEnd + c;
+        const c = step * stepDeg;
+        const y1 = slope * xStart + c;
+        const y2 = slope * xEnd + c;
         const p1 = projectTorusPoint(xStart, y1, viewState);
         const p2 = projectTorusPoint(xEnd, y2, viewState);
         this.ctx.beginPath();
@@ -335,6 +370,7 @@
   };
 
   // src/torus-scroll-controller.ts
+  var WHEEL_PAN_SPEED = 0.2;
   function createInitialViewState(stage) {
     const width = Math.max(1, stage.clientWidth);
     const height = Math.max(1, stage.clientHeight);
@@ -388,7 +424,7 @@
       };
       this.onWheel = (event) => {
         event.preventDefault();
-        this.applyPanDeltaPx(-event.deltaX, -event.deltaY);
+        this.applyPanDeltaPx(-event.deltaX * WHEEL_PAN_SPEED, -event.deltaY * WHEEL_PAN_SPEED);
       };
       this.stage = params.stage;
       this.interactionLayer = params.interactionLayer;
