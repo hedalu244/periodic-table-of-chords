@@ -1,5 +1,10 @@
 import { renderChordButton } from "./chord-button";
-import { RAW_CHORD_TABLE, TorusChordRow } from "./chord-table";
+import {
+    ChordTableVisibility,
+    DEFAULT_CHORD_TABLE_VISIBILITY,
+    generateChordTable,
+    TorusChordRow,
+} from "./chord-table";
 import { Chord } from "./chord-utils";
 import { TorusBackground } from "./torus-background";
 import { TorusScrollController } from "./torus-scroll-controller";
@@ -37,16 +42,14 @@ export class TorusRenderer {
     private readonly onChordSelected: (chordName: string, chord: Chord) => Promise<void>;
     private readonly torusScrollController: TorusScrollController;
     private readonly torusBackground: TorusBackground;
-    private readonly chordTable: TorusChordRow[];
-    private readonly chordById: Map<string, TorusChordRow>;
+    private chordTable: TorusChordRow[] = [];
+    private chordById: Map<string, TorusChordRow> = new Map<string, TorusChordRow>();
     private activeChordId: string | null = null;
 
     constructor(params: ChordMapControllerParams) {
         this.chordLayer = params.chordLayer;
         this.onChordSelected = params.onChordSelected;
         this.torusBackground = new TorusBackground(params.gridCanvas);
-        this.chordTable = normalizeChordTable(RAW_CHORD_TABLE);
-        this.chordById = buildChordMap(this.chordTable);
         this.torusScrollController = new TorusScrollController({
             stage: params.stage,
             interactionLayer: params.chordLayer,
@@ -54,10 +57,22 @@ export class TorusRenderer {
                 this.renderScene();
             },
         });
+        this.updateChordTable(DEFAULT_CHORD_TABLE_VISIBILITY);
     }
 
     clearActiveChord(): void {
         this.activeChordId = null;
+        this.renderScene();
+    }
+
+    updateChordTable(visibility: ChordTableVisibility): void {
+        this.chordTable = normalizeChordTable(generateChordTable(visibility));
+        this.chordById = buildChordMap(this.chordTable);
+
+        if (this.activeChordId !== null && !this.chordById.has(this.activeChordId)) {
+            this.activeChordId = null;
+        }
+
         this.renderScene();
     }
 

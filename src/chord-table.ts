@@ -13,15 +13,58 @@ export interface TorusChordRow {
     rate: number;
 }
 
+export interface ChordTableVisibility {
+    diminishedSeventh: boolean;
+    diminished: boolean;
+    halfdiminished: boolean;
+    minorTriad: boolean;
+    minorSeventh: boolean;
+    majorTriad: boolean;
+    dominantSeventh: boolean;
+}
+
+export const DEFAULT_CHORD_TABLE_VISIBILITY: ChordTableVisibility = {
+    diminishedSeventh: true,
+    diminished: true,
+    halfdiminished: true,
+    minorTriad: true,
+    minorSeventh: true,
+    majorTriad: true,
+    dominantSeventh: true,
+};
+
 
 export const RAW_CHORD_TABLE: TorusChordRow[] = [
-    ...generateDiminishedSeventhChords(),
-    ...generateHalfdiminishedChords(),
-    ...generateMinorTriads(),
-    ...generateMinorSeventhChords(),
-    ...generateMajorTriads(),
-    ...generateDominantSeventhChords(),
+    ...generateChordTable(DEFAULT_CHORD_TABLE_VISIBILITY),
 ];
+
+export function generateChordTable(visibility: ChordTableVisibility): TorusChordRow[] {
+    const chordTable: TorusChordRow[] = [];
+
+    if (visibility.diminishedSeventh) {
+        chordTable.push(...generateDiminishedSeventhChords());
+    }
+    if (visibility.diminished) {
+        chordTable.push(...generateDiminishedChords());
+    }
+    if (visibility.halfdiminished) {
+        chordTable.push(...generateHalfdiminishedChords());
+    }
+    if (visibility.minorTriad) {
+        chordTable.push(...generateMinorTriads());
+    }
+    if (visibility.minorSeventh) {
+        chordTable.push(...generateMinorSeventhChords());
+    }
+    if (visibility.majorTriad) {
+        chordTable.push(...generateMajorTriads());
+    }
+    if (visibility.dominantSeventh) {
+        chordTable.push(...generateDominantSeventhChords());
+    }
+
+    return chordTable;
+}
 
 function generateDiminishedSeventhChords(): TorusChordRow[] {
     const chordTable: TorusChordRow[] = [];
@@ -35,6 +78,28 @@ function generateDiminishedSeventhChords(): TorusChordRow[] {
             id: chordId,
             xDeg: i * 120,
             yDeg: i * -30,
+            name: chordName,
+            chord: chord,
+            color1: [T_color, D_color, S_color][i % 3],
+            color2: [T_color, D_color, S_color][i % 3],
+            rate: 100
+
+        });
+    }
+    return chordTable;
+}
+
+function generateDiminishedChords(): TorusChordRow[] {
+    const chordTable: TorusChordRow[] = [];
+    for (let i = 0; i < 12; i += 1) {
+        const chordName = `${getNoteName(i * 7)}dim`;
+        const chordId = chordName.toLowerCase();
+
+        const chord = generateBasicChord(chordName);
+        chordTable.push({
+            id: chordId,
+            xDeg: i * 120,
+            yDeg: i * -30 - 45,
             name: chordName,
             chord: chord,
             color1: [T_color, D_color, S_color][i % 3],

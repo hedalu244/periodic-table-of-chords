@@ -58,6 +58,8 @@ export function generateBasicChord(name: string): Chord {
             return transposeChord([0, 4, 7], rootPitchClass); // Major triad
         case "m":
             return transposeChord([0, 3, 7], rootPitchClass); // Minor triad
+        case "dim":
+            return transposeChord([0, 3, 6], rootPitchClass); // Diminished triad
         case "7":
             return transposeChord([0, 4, 7, 10], rootPitchClass); // Dominant seventh
         case "m7":

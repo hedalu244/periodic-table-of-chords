@@ -5,6 +5,7 @@ import { setupArpeggioControls } from "./arpeggio-controls";
 import { KeyboardCanvas } from "./keyboard-canvas";
 import { WhisqCanvas } from "./whisq-canvas";
 import { nameChordWithInversion, Voicing } from "./chord-utils";
+import { setupVisibilityControls } from "./visibility-controls";
 
 function renderCurrentChordName(
     chordLabelElement: HTMLParagraphElement,
@@ -52,6 +53,10 @@ async function main(): Promise<void> {
     setupArpeggioControls(() => {
         voicingManager.replayActiveVoicing();
     },);
+
+    setupVisibilityControls((visibility) => {
+        torusRenderer.updateChordTable(visibility);
+    });
 
     const upButton = getElementById("btn-invert-up", HTMLButtonElement);
     upButton.addEventListener("click", () => {
