@@ -72,7 +72,6 @@ function generateDiminishedSeventhChords(): TorusChordRow[] {
         const chordName = `${getNoteName(i * 7)}dim7`;
         const chordId = chordName.toLowerCase();
 
-
         const chord = generateBasicChord(chordName);
         chordTable.push({
             id: chordId,

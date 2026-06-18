@@ -24,6 +24,24 @@ function isChordButtonVisible(point: { x: number; y: number; }, viewState: Torus
     );
 }
 
+function isSameChord(chordId1: string | null, chordId2: string | null): boolean {
+    if (chordId1 === null || chordId2 === null) {
+        return false;
+    }
+
+    const T_group = ["cdim7", "d#dim7", "f#dim7", "adim7"];
+    const D_group = ["c#dim7", "edim7", "gdim7", "a#dim7"];
+    const S_group = ["ddim7", "fdim7", "g#dim7", "bdim7"];
+
+    if (T_group.includes(chordId1) && T_group.includes(chordId2) || 
+        D_group.includes(chordId1) && D_group.includes(chordId2) ||
+        S_group.includes(chordId1) && S_group.includes(chordId2)) {
+        return true;
+    }
+
+    return chordId1 === chordId2;
+}
+
 function createChordButton(
     chord: TorusChordRow,
     x: number,
@@ -33,7 +51,7 @@ function createChordButton(
 ): HTMLButtonElement {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = activeChordId === chord.id ? "torus-chord active" : "torus-chord";
+    button.className = isSameChord(activeChordId, chord.id) ? "torus-chord active" : "torus-chord";
     button.style.left = `${x}px`;
     button.style.top = `${y}px`;
     button.textContent = chord.name;
