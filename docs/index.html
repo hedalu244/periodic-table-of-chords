@@ -33,65 +33,62 @@
                     <canvas id="whisq-canvas"></canvas>
                 </section>
                 <section class="settings">
-                    <details>
-                        <summary>Settings</summary>
-                        <fieldset>
-                            <legend>Arpeggio Type</legend>
-                            <label>
-                                <input type="radio" name="arpeggio-type" value="none" checked>
-                                none
-                            </label>
-                            <label>
-                                <input type="radio" name="arpeggio-type" value="up-once">
-                                up-once
-                            </label>
-                            <label>
-                                <input type="radio" name="arpeggio-type" value="down-once">
-                                down-once
-                            </label>
-                            <label>
-                                <input type="radio" name="arpeggio-type" value="up-loop">
-                                up-loop
-                            </label>
-                            <label>
-                                <input type="radio" name="arpeggio-type" value="down-loop">
-                                down-loop
-                            </label>
-                        </fieldset>
-                        <label for="input-arpeggio-offset-ms">Arpeggio Amount (ms)</label>
-                        <input id="input-arpeggio-offset-ms" type="number" min="0" step="1" value="170">
-                        <fieldset>
-                            <legend>Visible Chord Qualities</legend>
-                            <label>
-                                <input id="visibility-dim7" type="checkbox" checked>
-                                dim7
-                            </label>
-                            <label>
-                                <input id="visibility-dim" type="checkbox" checked>
-                                dim
-                            </label>
-                            <label>
-                                <input id="visibility-m7b5" type="checkbox" checked>
-                                m7-5
-                            </label>
-                            <label>
-                                <input id="visibility-minor" type="checkbox" checked>
-                                m
-                            </label>
-                            <label>
-                                <input id="visibility-minor7" type="checkbox" checked>
-                                m7
-                            </label>
-                            <label>
-                                <input id="visibility-major" type="checkbox" checked>
-                                major
-                            </label>
-                            <label>
-                                <input id="visibility-dominant7" type="checkbox" checked>
-                                7
-                            </label>
-                        </fieldset>
-                    </details>
+                    <fieldset class="option-group">
+                        <legend>Arpeggio</legend>
+                        <label class="radio-chip">
+                            <input type="radio" name="arpeggio-type" value="none" checked>
+                            <span>None</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="arpeggio-type" value="up-once">
+                            <span>Up-once</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="arpeggio-type" value="down-once">
+                            <span>Down-once</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="arpeggio-type" value="up-loop">
+                            <span>Up-loop</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="arpeggio-type" value="down-loop">
+                            <span>Down-loop</span>
+                        </label>
+                    </fieldset>
+                    <label for="input-arpeggio-offset-ms">Amount </label>
+                    <input id="input-arpeggio-offset-ms" type="number" min="0" step="1" value="170">
+                    <fieldset class="option-group">
+                        <legend>Visible Chord Qualities</legend>
+                        <label class="checkbox-chip">
+                            <input id="visibility-dim7" type="checkbox" checked>
+                            <span>dim7</span>
+                        </label>
+                        <label class="checkbox-chip">
+                            <input id="visibility-minor7" type="checkbox" checked>
+                            <span>m7</span>
+                        </label>
+                        <label class="checkbox-chip">
+                            <input id="visibility-dominant7" type="checkbox" checked>
+                            <span>7</span>
+                        </label>
+                        <label class="checkbox-chip">
+                            <input id="visibility-m7b5" type="checkbox" checked>
+                            <span>m7-5</span>
+                        </label>
+                        <label class="checkbox-chip">
+                            <input id="visibility-major" type="checkbox">
+                            <span>maj</span>
+                        </label>
+                        <label class="checkbox-chip">
+                            <input id="visibility-minor" type="checkbox">
+                            <span>min</span>
+                        </label>
+                        <label class="checkbox-chip">
+                            <input id="visibility-dim" type="checkbox">
+                            <span>dim</span>
+                        </label>
+                    </fieldset>
                 </section>
             </aside>
         </section>
