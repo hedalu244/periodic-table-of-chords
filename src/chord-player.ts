@@ -109,7 +109,7 @@ export class ChordPlayer {
     private playChord(voicing: Voicing): void {
         for (const pitch of voicing) {
             const voiceId = this.backend.noteOn({
-                pitch: pitch,
+                pitch: pitch - 3,
                 velocity: DEFAULT_VELOCITY,
                 channel: DEFAULT_CHANNEL,
             });
